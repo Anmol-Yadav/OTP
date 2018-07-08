@@ -1,0 +1,85 @@
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+		<link href="includes/css/bootstrap-glyphicons.css" rel="stylesheet">
+
+		<!-- Custom CSS -->
+		<link href="includes/css/styles.css" rel="stylesheet">
+
+		<!-- Include Modernizr in the head, before any other Javascript -->
+	
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.css" />
+    <title>NODE SMS TEXTING</title>
+   
+</head>
+<body>
+    <div class="container">
+        <h2>SEND SMS Message</h2>
+        <h4 align="right"><a href="/addone">Add Contacts</a></h4>
+        <p class="response">
+                <table id="table">
+                        <tr>
+                          <th>First Name</th>
+                          <th>Phone</th>
+                        </tr>
+                        <% for(let i = 0; i < rows.length; i++) { %>
+                        <tr>
+                        <td id="name"><a onclick="javascript: submitForm(this)"><%=rows[i].Name%></a></td>
+                        <td><%=rows[i].Phone%></td>
+                        <td>   Hi. Your OTP is: <%=Math.floor(Math.random()*900000) + 100000%></td>
+                         <td>
+                                <button onclick="show(this)"  class="btn button-primary">Send OTP</button>
+                        </td>
+                        
+                        </tr>
+                       
+                        <% } %>
+                      </table>									
+             </p>
+            
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    
+    <!-- First try for the online version of jQuery-->
+	<script src="http://code.jquery.com/jquery.js"></script>
+
+	<!-- If no online access, fallback to our hardcoded version of jQuery -->
+	<script>window.jQuery || document.write('<script src="includes/js/jquery-2.2.3.min.js"><\/script>')</script>
+
+	<!-- Bootstrap JS -->
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <script src="includes/js/modernizr-2.6.2.min.js"></script>
+    <script src="http://code.jquery.com/jquery.js"></script>
+   
+    <script>
+            function show(link){
+                let number = link.parentNode.parentNode.childNodes[3].innerText;
+                let name= link.parentNode.parentNode.childNodes[1].innerText;
+                let text = link.parentNode.parentNode.childNodes[5].innerText;
+                console.log("phone:",number);
+                console.log("name:",name);
+
+
+                fetch('/',{
+                    method:'POST',
+                    headers:{
+                            'Content-type': 'application/json'
+                             },
+                        body:JSON.stringify({number:number, text:text,name:name})
+                        })
+    .then(function(res){
+        console.log(res);
+    })
+    .catch(function(err){
+        console.log(err);
+    });
+            }
+       
+
+        </script>
+</body>
+</html>

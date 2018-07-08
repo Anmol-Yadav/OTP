@@ -1,0 +1,23 @@
+<html>
+    <head>
+        <title></title>
+    </head>
+    <body>
+            <form name="add_contact" method="POST" action="/add">
+        <div class="container">
+            ID: <input type="text" name="ID" id="ID"><br>
+            Name: <input type="text" name="name" id="name"><br>
+            Phone: <input type="number" name="number" id="phone"><br>
+            <button type="submit"  id="button">Submit</button>
+        </div>
+    </form>
+
+        <script>
+            function show(link){
+                let name= link.parentNode.childNodes[3].innerText;
+                console.log(name);
+                console.log("jbgjk");
+            }
+        </script>
+    </body>
+</html>
