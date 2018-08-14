@@ -13,14 +13,92 @@
 		<!-- Include Modernizr in the head, before any other Javascript -->
 	
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>NODE SMS TEXTING</title>
-   
+   <style>
+   body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.topnav {
+  overflow: hidden;
+  background-color: #333;
+}
+
+.topnav a {
+  float: left;
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.active {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.topnav .icon {
+  display: none;
+}
+
+@media screen and (max-width: 600px) {
+  .topnav a:not(:first-child) {display: none;}
+  .topnav a.icon {
+    float: right;
+    display: block;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .topnav.responsive {position: relative;}
+  .topnav.responsive .icon {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  .topnav.responsive a {
+    float: none;
+    display: block;
+    text-align: left;
+  }
+}
+textarea{
+    width: 700px;
+    height: 50px;
+}
+a{
+    cursor: pointer;
+}
+</style>
 </head>
 <body>
+        <div class="topnav" id="myTopnav">
+                <a href="/" class="active">Home</a>
+                <a href="/message">Messages</a>
+                <a href="/addone">Add Single Contacts</a>
+                <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+                  <i class="fa fa-bars"></i>
+                </a>
+              </div>
     <div class="container">
-        <h2>SEND SMS Message</h2>
-        <h4 align="right"><a href="/addone">Add Contacts</a></h4>
-        <p class="response">
+        <div class="row" style="padding-top: 15px">
+        <div class="column">
+                <form name="add_many" method="POST" action="/bulk">
+                    <textarea name="bulk" id="bulk" class="form-control" placeholder="[{fname:Shubhi,lname:Yadav,Phone:910000,gender:M/F}]"></textarea>                  
+                        <button type="button" class="button-primary">Add Many</button>
+                </form>
+                </div>
+                <div class="column">
+                            <p class="response">
                 <table id="table">
                         <tr>
                           <th>First Name</th>
@@ -28,11 +106,11 @@
                         </tr>
                         <% for(let i = 0; i < rows.length; i++) { %>
                         <tr>
-                        <td id="name"><a onclick="javascript: submitForm(this)"><%=rows[i].Name%></a></td>
-                        <td><%=rows[i].Phone%></td>
-                        <td>   Hi. Your OTP is: <%=Math.floor(Math.random()*900000) + 100000%></td>
+                        <td id="name"><a onclick="javascript: submitForm(this)"><%=rows[i].fname%></a></td>
+                        <td><a onclick="show(this)"> <%=rows[i].Phone%> </a></td>
+                       <!-- <td>   Hi. Your OTP is: <%=Math.floor(Math.random()*900000) + 100000%></td> -->
                          <td>
-                                <button onclick="show(this)"  class="btn button-primary">Send OTP</button>
+                               <!-- <button onclick="show(this)"  class="btn button-primary">Send OTP</button>-->
                         </td>
                         
                         </tr>
@@ -40,9 +118,13 @@
                         <% } %>
                       </table>									
              </p>
+             </div>
+                    
+        
             
+            </div>
     </div>
-    <script src="/socket.io/socket.io.js"></script>
+   
     
     <!-- First try for the online version of jQuery-->
 	<script src="http://code.jquery.com/jquery.js"></script>
@@ -54,29 +136,26 @@
     <script src="bootstrap/js/bootstrap.min.js"></script>
     <script src="includes/js/modernizr-2.6.2.min.js"></script>
     <script src="http://code.jquery.com/jquery.js"></script>
+    <script src="index.js"></script>
    
     <script>
+        function myFunction() 
+        {
+    var x = document.getElementById("myTopnav");
+    if (x.className === "topnav") {
+        x.className += " responsive";
+    } else {
+        x.className = "topnav";
+    }
+}
             function show(link){
                 let number = link.parentNode.parentNode.childNodes[3].innerText;
                 let name= link.parentNode.parentNode.childNodes[1].innerText;
                 let text = link.parentNode.parentNode.childNodes[5].innerText;
                 console.log("phone:",number);
                 console.log("name:",name);
-
-
-                fetch('/',{
-                    method:'POST',
-                    headers:{
-                            'Content-type': 'application/json'
-                             },
-                        body:JSON.stringify({number:number, text:text,name:name})
-                        })
-    .then(function(res){
-        console.log(res);
-    })
-    .catch(function(err){
-        console.log(err);
-    });
+                
+                window.location.href = "http://localhost:3000/"+number;
             }
        
 
